@@ -1,0 +1,8 @@
+yfinance
+pymongo
+pandas_datareader
+pandas
+bs4
+requests
+numpy
+lxml
