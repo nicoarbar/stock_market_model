@@ -1,0 +1,5 @@
+scrapingstock.log
+__pycache__/
+stock_data_historic_dir/
+sp500tickers.pickle
+tickers_no_procesados.csv

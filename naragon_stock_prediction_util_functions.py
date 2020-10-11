@@ -33,8 +33,6 @@ not_processed_filename = 'tickers_no_procesados.csv'
 
 #funcion para tener un logger de trazabilidad
 def logger_for_my_stock_app():
-	LOG_FORMAT = '%(asctime)s %(levelname)s - %(message)s'
-	DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 	logging.basicConfig(filename='scrapingstock.log', level=logging.INFO, format = LOG_FORMAT, filemode ='w', datefmt=DATETIME_FORMAT)
 	logger = logging.getLogger()
 	return logger
@@ -109,9 +107,9 @@ class Mongo_stock_metadata:
 	def insert_in_mongodb(self, dict_key_value):
 		#se inserta
 		logger.info('Insertando datos en la coleccion de MongoDB')
-		if len(dict_key_value) > 1:
+		if type(dict_key_value) == 'list':
 			self.coleccion.insert_many(dict_key_value)
-		elif len(dict_key_value) == 1:
+		elif len(dict_key_value) >= 1:
 			self.coleccion.insert_one(dict_key_value)
 		else:
 			logger.warning('El documento a insertar esta vacio')
