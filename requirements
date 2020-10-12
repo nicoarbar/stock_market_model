@@ -6,3 +6,5 @@ bs4
 requests
 numpy
 lxml
+datetime
+pickle

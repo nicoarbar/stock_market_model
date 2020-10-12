@@ -1,25 +1,40 @@
 #script para leer y hacer analitica en MongoDB
 from naragon_stock_prediction_util_functions import Mongo_stock_metadata
 
+#modificar flags para realizar operaciones de lecutra o borrado de lo que se quiera
+delete_collections = False
+read_tickers = False
+read_info = True
+count_elements = True
+read_specific_ticker = 'IDR.MC'
+
 #objetos que seran base de datos y colecciones de MongoDB de mi app
-mongo_tickers_sectors = Mongo_stock_metadata('stock_metadata', 'tickers_sectors')
+mongo_tickers_list = Mongo_stock_metadata('stock_metadata', 'tickers_list')
 mongo_ticker_info = Mongo_stock_metadata('stock_metadata', 'tickers_info')
 
-#se lee el primer elemento de cada coleccion
-mongo_tickers_sectors_one = mongo_tickers_sectors.read_one_from_mongodb()
-mongo_tickers_info_one = mongo_ticker_info.read_one_from_mongodb()
+#ELIMINAR COLECCIONES SI FUESE NECESARIO
+if delete_collections:
+	mongo_tickers_list.coleccion.drop()
+	mongo_ticker_info.coleccion.drop()
+	print('Se han borrado las colecciones')
 
-#print(mongo_tickers_sectors_one)
-#print(mongo_tickers_info_one)
+if read_tickers:
+	#se COLECCION DE TICKERS
+	mongo_tickers_list_all = mongo_tickers_list.read_all_from_mongodb()
+	for doc in mongo_tickers_list_all:
+		print(doc['ticker_market'], ':', doc['ticker_list'])
 
-#se todo de cada coleccion
-mongo_tickers_sectors_all_prim = mongo_tickers_sectors.read_all_from_mongodb()[0]
-mongo_tickers_sectors_all_segu = mongo_tickers_sectors.read_all_from_mongodb()[1]
-mongo_tickers_info_all_prim = mongo_ticker_info.read_all_from_mongodb()[0]
+if read_info:
+	#se lee INFORMACION DE CADA TICKER
+	mongo_tickers_info_all = mongo_ticker_info.read_all_from_mongodb()
+	for doc in mongo_tickers_info_all:
+		print(doc['ticker_name'])
 
-print(mongo_tickers_sectors_all_prim)
-print(mongo_tickers_sectors_all_segu)
-print(mongo_tickers_info_all_prim)
+if count_elements:
+	print('n info de tickers', mongo_ticker_info.count_elements_collection())
+	print('n tickers lists', mongo_tickers_list.count_elements_collection())
 
-
-
+if read_specific_ticker:
+	specific_ticker_info = mongo_ticker_info.read_by_key_from_mongodb('ticker_name', read_specific_ticker)
+	for key, value in specific_ticker_info.items():
+		print(key, ':', value)
