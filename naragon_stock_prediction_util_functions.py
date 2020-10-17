@@ -160,11 +160,14 @@ def insert_ticker_info_in_mongo(mongo_object, ticker):
 		ticker_api_info_dict['fecha_hora_insercion'] = dt.datetime.now()
 		mongo_object.insert_in_mongodb(ticker_api_info_dict)
 	except:
-		pass
+		logger.info('Ticker no procesado: {}'.format(ticker))
 
-def get_tickers_list(ticker_col):
-	mongo_tickers_list = Mongo_stock_metadata('stock_metadata', 'tickers_list')
-	tickers_list = mongo_tickers_list.read_by_key_from_mongodb('ticker_market', ticker_col)['ticker_list']
+def get_tickers_to_process(*tickers, ticker_col = False):
+	if ticker_col:
+		mongo_tickers_list = Mongo_stock_metadata('stock_metadata', 'tickers_list')
+		tickers_list = mongo_tickers_list.read_by_key_from_mongodb('ticker_market', ticker_col)['ticker_list']
+	else:
+		tickers_list = list(tickers)
 	return tickers_list
 
 #ticker_sample puede ser un ticker o una lista de tickers para descargar datos historicos

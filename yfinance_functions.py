@@ -5,7 +5,7 @@ ticker = 'IDR.MC'
 ticker_yf = yf.Ticker(ticker)
 
 # get stock info
-#ticker_yf.info
+print(ticker_yf.info)
 
 # get historical market data
 #hist = ticker_yf.history(period="max")
@@ -39,7 +39,7 @@ ticker_yf = yf.Ticker(ticker)
 
 # show earnings
 #print(ticker_yf.earnings)
-print(ticker_yf.quarterly_earnings)
+#print(ticker_yf.quarterly_earnings)
 
 # show sustainability
 #ticker_yf.sustainability

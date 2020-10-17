@@ -4,8 +4,8 @@ from naragon_stock_prediction_util_functions import Mongo_stock_metadata
 #modificar flags para realizar operaciones de lecutra o borrado de lo que se quiera
 delete_collections = False
 read_tickers = False
-read_info = True
-count_elements = True
+read_info = False
+count_elements = False
 read_specific_ticker = 'IDR.MC'
 
 #objetos que seran base de datos y colecciones de MongoDB de mi app
@@ -14,7 +14,7 @@ mongo_ticker_info = Mongo_stock_metadata('stock_metadata', 'tickers_info')
 
 #ELIMINAR COLECCIONES SI FUESE NECESARIO
 if delete_collections:
-	mongo_tickers_list.coleccion.drop()
+	#mongo_tickers_list.coleccion.drop()
 	mongo_ticker_info.coleccion.drop()
 	print('Se han borrado las colecciones')
 
