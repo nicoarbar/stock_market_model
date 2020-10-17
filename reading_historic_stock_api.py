@@ -3,7 +3,7 @@ from naragon_stock_prediction_util_functions import Mongo_stock_metadata, get_ti
 import pandas as pd
  
 #seleccionamos los tickers a procesar - pueden ser todos o alguna seleccion de uno en particular
-ticker_list = get_tickers_to_process('IDR.MC') #para testear la API el ticker de indra
+ticker_list = get_tickers_to_process(ticker_col='tickers_ibex35') 
 
 #fechas de comienzo y fin
 #set de datos para testar modelo de 2020 solo hasta septiembre (actualidad)
@@ -24,13 +24,13 @@ data_historic_dir_train = 'historic_stock_data_{}_{}'.format(start_train[:7].rep
 
 ticker_info_df = False
 ticker_train = True
-train_max = True
-ticker_test = False
+train_max = False
+ticker_test = True
 
 if ticker_info_df:
 	#leemos la coleccion con la informacion de los indicadores de los tickers
 	mongo_ticker_info = Mongo_stock_metadata('stock_metadata', 'tickers_info')
-	#se transformka la info en un dataframe para analizar
+	#se transforma la info en un dataframe para analizar
 	df = pd.DataFrame(mongo_ticker_info.coleccion.find())
 
 	filter_sample = df['ticker_name'] == ticker_sample

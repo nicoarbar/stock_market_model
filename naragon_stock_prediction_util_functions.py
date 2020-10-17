@@ -200,3 +200,8 @@ def get_historical_stock_data(ticker_sample, start, end, data_historic_dir):
 				except:
 					logger.info('No se ha podido obtener historico del ticker: {}'.format(ticker))
 	
+
+def read_stock_csv(ticker, file_dir):
+	df = pd.read_csv('{}/{}.csv'.format(file_dir, ticker))
+	df.set_index('Date', inplace = True)
+	return df 
