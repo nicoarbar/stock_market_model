@@ -8,3 +8,4 @@ numpy
 lxml
 datetime
 pickle
+scikit-learn
