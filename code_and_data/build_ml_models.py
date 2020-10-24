@@ -1,14 +1,13 @@
 import pandas as pd
 from naragon_stock_prediction_util_functions import read_stock_csv
 from naragon_ml_model_functions import *
-from sklearn import svm, cross_validation, neighbors
+from sklearn import svm, neighbors
 from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 
 #datos a procesar en el directorio
 annomes_procesar = '200001_201812' #train
 annomes_procesar = '201901_201912' #test
-parent_data_dir = 'lectura_escritura_almacenamiento_datos'
-data_dir = parent_data_dir + '/' + 'historic_stock_data_' + annomes_procesar
+data_dir = 'historic_stock_data_' + annomes_procesar
 
 #seleccionamos parametros para construir el modelo de entrenamiento y ajuste
 #elegimos una empresa a analizar - el ticker corresponde a Indra
