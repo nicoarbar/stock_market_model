@@ -6,6 +6,9 @@ annomes_procesar = '201901_201912' #test
 annomes_procesar = '200001_201812' #train
 data_dir = 'historic_stock_data_{}'.format(annomes_procesar)
 join_ticker_train_data = True
+#parametro de columnas que quiero en mi DF unificado
+#columnas_df = ['High', 'Low', 'Adj Close']
+columnas_df = ['Adj Close']
 
 #leer csv de datos que guardamos
 #leemos lista de tickers 
@@ -15,10 +18,14 @@ if join_ticker_train_data:
 	for ticker in tickers_list:
 		df = read_stock_csv(ticker, data_dir)
 		#borramos algunas columnas que no nos interesan - ya que sera un DF bastante grande
-		df.drop(['Open','Close','Volume'],1, inplace=True)
+		df.drop(['Open','Close','Volume', 'High', 'Low'],1, inplace=True)
 		#renombramos las columnas con su ticker
 		ticker_name = ticker.replace('.MC','')
-		diccionario_col_renombrar = {'High': 'max_{}'.format(ticker_name), 'Low':'min_{}'.format(ticker_name), 'Adj Close': 'adj_{}'.format(ticker_name)}
+		
+		#nombrado de columnas en base a los campos que quiero con sufijo ticker
+		diccionario_col_renombrar = {}
+		for col_name in columnas_df:
+			diccionario_col_renombrar[col_name] = col_name + '_' + ticker_name
 		df.rename(columns=diccionario_col_renombrar, inplace=True)
 
 		#ahora haremos join con el dataframe principal

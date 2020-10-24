@@ -3,3 +3,4 @@ __pycache__/
 historic_stock_data_*/
 sp500tickers.pickle
 tickers_no_procesados.csv
+.ipynb_checkpoints
