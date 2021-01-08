@@ -1,12 +1,12 @@
 import pandas as pd
-from naragon_ml_model_functions import get_data_model_sube_baja_mantiene, porcentaje_acierto_modelo, clasificador_fit_predict_and_score
+from datos_y_funciones.naragon_ml_model_functions import *
 #modelos ml
 from sklearn import svm, neighbors
 from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 
 #parametros para lanzar modelos
-modelo_knc = False
-modelo_vc = True
+modelo_knc = True
+modelo_vc = False
 
 #seleccionamos parametros para construir el modelo de entrenamiento y ajuste
 #elegimos una empresa a analizar - el ticker corresponde a Indra

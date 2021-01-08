@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from naragon_stock_prediction_util_functions import read_stock_csv
+from datos_y_funciones.naragon_stock_prediction_util_functions import read_stock_csv
 
 """
 vamos a predecir para una empresa si va a crecer, bajar o mantenerse en su nivel
@@ -59,7 +59,7 @@ def get_data_model_sube_baja_mantiene(annomes_procesar, ticker, porcentaje_cambi
 	col_target = 'target_dia'
 
 	#directorio donde estan los ficheros csv con datos
-	data_dir = 'historic_stock_data_' + annomes_procesar
+	data_dir = 'datos_y_funciones/historic_stock_data_' + annomes_procesar
 
 	#leemos el Df total
 	df = read_stock_csv('TOTAL_' + annomes_procesar, data_dir)

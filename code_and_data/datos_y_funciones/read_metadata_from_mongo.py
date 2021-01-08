@@ -6,7 +6,8 @@ delete_collections = False
 read_tickers = False
 read_info = False
 count_elements = False
-read_specific_ticker = 'IDR.MC'
+read_specific_ticker = 'TEF.MC'
+#read_specific_ticker = False
 
 #objetos que seran base de datos y colecciones de MongoDB de mi app
 mongo_tickers_list = Mongo_stock_metadata('stock_metadata', 'tickers_list')
