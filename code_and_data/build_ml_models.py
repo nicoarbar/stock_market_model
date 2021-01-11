@@ -1,50 +1,40 @@
+# se reabren los modelos guardados en formato pickle como objetos serializados
+# se pueden volver a abrir para ejecutar sobre otro scirpt y pasarle datos nuevos
+# evitar volver a reentrenar y procesar los datos nuevo 
 import pandas as pd
+import yfinance as yf
 from datos_y_funciones.naragon_ml_model_functions import *
-#modelos ml
-from sklearn import svm, neighbors
-from sklearn.ensemble import VotingClassifier, RandomForestClassifier
 
-#parametros para lanzar modelos
-modelo_knc = True
-modelo_vc = False
+#parametros para nueva inferencia
+data_pred_dir = 'datos_y_funciones/predicted_data'
+ticker = 'IDR.MC'
+ticker_simple = ticker.replace('.MC','')
 
-#seleccionamos parametros para construir el modelo de entrenamiento y ajuste
-#elegimos una empresa a analizar - el ticker corresponde a Indra
-ticker = 'IDR'
-porcentaje_cambio_etiqueta = 0.04
-dias_analisis_variacion = 4
-col_target_dia = 4
+#cogere los datos de 2020 como nuevos
+start = '2020-12-30'
+end = '2020-12-31'
+#datos de fechas de entrenamiento
+fechas_train = '200001_201812'
+#nombre de la carpeta donde esta el pickle
+model_pickle_file = 'modelos_desarrollados'
+#modelo
+model_type = 'regresion_lineal_simple'
+#nombre del objeto pickle - tiene las fechas de los datos con los que se ha entrenado
+model_pickle_name = '{}_{}_{}'.format(ticker_simple, model_type, fechas_train)
+#nombre del objeto de resultados de la prediccion - se le pone la fecha fin de los datos
+model_result_name = '{}_{}_{}'.format(ticker, model_type, end)
 
-#datos a procesar en el directorio
-annomes_procesar_train = '200001_201812' #train
-annomes_procesar_test = '201901_201912' #test
+#leemos nuevos datos de Yfinance para predecir
+df = yf.download(ticker, start=start, end=end)
+#se toma solo la columan Adj Close
+df_close = get_adj_close_col(df)
+#transformarmos el dataframe de origen en un array numpy para predecir con el modelo
+x_test = df_close.to_numpy()
 
-#datos train
-df_train, x_train, y_train= get_data_model_sube_baja_mantiene(annomes_procesar_train, ticker, porcentaje_cambio_etiqueta, dias_analisis_variacion, col_target_dia)
-#datos test 
-df_test, x_test, y_test= get_data_model_sube_baja_mantiene(annomes_procesar_test, ticker, porcentaje_cambio_etiqueta, dias_analisis_variacion, col_target_dia)
+#abrimos los modelos guardados en formato pickle
+restored_model = open_model_in_pickle_object(model_pickle_file + '/' +model_pickle_name)
+#con los nuevos datos se realizan predicciones con el modelo reabierto
+y_pred = modelo_predict_new_data(restored_model, x_test)
 
-if modelo_knc:
-	#ya tenemos los datos vamos a construir el modelo
-	clasificador = neighbors.KNeighborsClassifier()
-	#con esta funcion a medida se hace el fit, predict y el score para modelos de clasificacion
-	accuracy, y_pred = clasificador_fit_predict_and_score(clasificador, x_train, y_train, x_test, y_test)
-	# mi funcion de score tiene que dar el mismo resultado que el score del clasificador
-	mi_accuracy = porcentaje_acierto_modelo(y_pred, y_test)
-
-#el modelo VotingClassifier asigna el mejor clasificador de todos los que se le pasen
-if modelo_vc:
-	#VotingClassifier se le pasan tuplas de distintos clasificadores
-	clasificador = VotingClassifier([
-		('lsvc', svm.LinearSVC()),
-		('knn', neighbors.KNeighborsClassifier()),
-		('rfor', RandomForestClassifier())
-		])
-	#con esta funcion a medida se hace el fit, predict y el score para modelos de clasificacion
-	accuracy, y_pred = clasificador_fit_predict_and_score(clasificador, x_train, y_train, x_test, y_test)
-	# mi funcion de score tiene que dar el mismo resultado que el score del clasificador
-	mi_accuracy = porcentaje_acierto_modelo(y_pred, y_test)
-
-print(accuracy)
-print(mi_accuracy)
-print(y_pred)
+#guardamos los resultados en un fichero csv
+join_test_df_with_pred_array_to_csv(y_pred, df_close, ticker, data_pred_dir, model_result_name)

@@ -1,6 +1,7 @@
 scrapingstock.log
 __pycache__/
 historic_stock_data_*/
+predicted_data/
 sp500tickers.pickle
 tickers_no_procesados.csv
 .ipynb_checkpoints
