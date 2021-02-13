@@ -3,6 +3,7 @@ import numpy as np
 import os
 from datos_y_funciones.naragon_stock_prediction_util_functions import read_stock_csv
 import pickle
+from datetime import datetime, timedelta
 
 """
 vamos a predecir para una empresa si va a crecer, bajar o mantenerse en su nivel
@@ -142,3 +143,10 @@ def open_model_in_pickle_object(model_name):
 def percentage_diff(actual_value, prev_value):
 	diff_value = actual_value - prev_value
 	return diff_value / prev_value * 100
+
+def get_current_date_minus_n_day_difference(n_day_difference):
+	current_date = datetime.today()
+	current_date_day_difference = current_date - timedelta(days=n_day_difference)
+	current_date_str = current_date.strftime('%Y-%m-%d')
+	current_date_day_difference_str = current_date_day_difference.strftime('%Y-%m-%d')
+	return current_date_str, current_date_day_difference_str
