@@ -9,8 +9,8 @@ read_info = False
 count_elements = False
 read_specific_ticker = 'TEF.MC'
 read_specific_ticker = False
-read_scores = False
-read_new_data_yf = True
+read_scores = True
+read_new_data_yf = False
 
 #objetos que seran base de datos y colecciones de MongoDB de mi app
 mongo_tickers_list = Mongo_stock_metadata('stock_metadata', 'tickers_list')
